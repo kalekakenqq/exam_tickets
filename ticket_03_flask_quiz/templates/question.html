@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<p class="progress">Вопрос {{ num + 1 }} из {{ total }}</p>
+<h2>{{ q.question }}</h2>
+<form method="post">
+    {% for option in q.options %}
+    <label style="display:block; margin-bottom:10px;">
+        <input type="radio" name="answer" value="{{ option }}"
+            {% if saved == option %}checked{% endif %} required>
+        {{ option }}
+    </label>
+    {% endfor %}
+    <br>
+    {% if num > 0 %}
+    <a href="{{ url_for('question', num=num-1) }}" class="btn btn-back">назад</a>
+    {% endif %}
+    <button type="submit" class="btn">вперёд</button>
+</form>
+{% endblock %}

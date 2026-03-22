@@ -1,0 +1,25 @@
+# базы данных sqlite
+*.db
+*.db-shm
+*.db-wal
+
+# кэш python
+__pycache__/
+*.pyc
+*.pyo
+
+# временные файлы
+*.txt
+!requirements.txt
+
+# загруженные изображения (билет 11)
+downloads/
+
+# django
+db.sqlite3
+*.log
+
+# виртуальное окружение
+venv/
+env/
+.venv/

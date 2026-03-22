@@ -1,0 +1,13 @@
+{% extends 'feedback/base.html' %}
+{% block content %}
+<h1>Обратная связь</h1>
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+        <label>{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}<p class="error">{{ error }}</p>{% endfor %}
+    {% endfor %}
+    <button type="submit">отправить</button>
+</form>
+{% endblock %}

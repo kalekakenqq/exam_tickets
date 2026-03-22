@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Результаты</h1>
+<h2>Правильных ответов: {{ score }} из {{ total }}</h2>
+<ul>
+{% for r in results %}
+    <li style="margin-bottom:10px;">
+        <strong>{{ r.question }}</strong><br>
+        {% if r.is_correct %}
+            <span class="correct">правильно: {{ r.user }}</span>
+        {% else %}
+            <span class="wrong">ваш ответ: {{ r.user }}</span>
+            (правильно: <strong>{{ r.correct }}</strong>)
+        {% endif %}
+    </li>
+{% endfor %}
+</ul>
+<a href="{{ url_for('start') }}" class="btn">пройти заново</a>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Каталог книг</h1>
+{% for item in catalog %}
+<div class="item">
+    <span><strong>{{ item.name }}</strong> — {{ item.price }} руб.</span>
+    <a href="/add/{{ item.id }}" class="btn">в корзину</a>
+</div>
+{% endfor %}
+{% endblock %}

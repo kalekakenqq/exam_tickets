@@ -1,0 +1,20 @@
+{% extends 'movies/base.html' %}
+{% block content %}
+<h1>Каталог фильмов</h1>
+<div style="margin-bottom:15px;">
+    фильтр:
+    <a href="{% url 'movie_list' %}" class="btn {% if not min_rating %}active{% endif %}">все</a>
+    <a href="?min_rating=7" class="btn {% if min_rating == '7' %}active{% endif %}">рейтинг > 7</a>
+    <a href="?min_rating=8" class="btn {% if min_rating == '8' %}active{% endif %}">рейтинг > 8</a>
+</div>
+{% for movie in movies %}
+<div class="movie">
+    <h2>{{ movie.title }} ({{ movie.year }})</h2>
+    <p>Режиссёр: {{ movie.director }}</p>
+    <p class="rating">Рейтинг: {{ movie.rating }}</p>
+    {% if movie.description %}<p>{{ movie.description }}</p>{% endif %}
+</div>
+{% empty %}
+<p>Фильмов нет. <a href="{% url 'admin:index' %}">Добавьте в админке</a></p>
+{% endfor %}
+{% endblock %}

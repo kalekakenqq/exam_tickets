@@ -1,0 +1,20 @@
+{% extends 'todo/base.html' %}
+{% block content %}
+<h1>Список дел</h1>
+<form method="post" action="{% url 'add_task' %}" style="margin-bottom:20px;">
+    {% csrf_token %}
+    {{ form.title }}
+    <button type="submit" class="btn">добавить</button>
+</form>
+{% for task in tasks %}
+<div class="task {% if task.completed %}done{% endif %}">
+    <span class="task-title">{{ task.title }}</span>
+    <a href="{% url 'toggle_complete' task.pk %}" class="btn {% if task.completed %}btn-undo{% else %}btn-done{% endif %}">
+        {% if task.completed %}отменить{% else %}выполнено{% endif %}
+    </a>
+    <a href="{% url 'delete_task' task.pk %}" class="btn btn-del">удалить</a>
+</div>
+{% empty %}
+<p>Задач пока нет. Добавьте первую!</p>
+{% endfor %}
+{% endblock %}

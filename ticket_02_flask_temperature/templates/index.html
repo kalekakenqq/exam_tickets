@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>Конвертер температур</h1>
+<form method="post">
+    <input type="text" name="temp" placeholder="Введите температуру" required>
+    <select name="scale">
+        <option value="C">Цельсий в Фаренгейт</option>
+        <option value="F">Фаренгейт в Цельсий</option>
+    </select>
+    <button type="submit">Конвертировать</button>
+</form>
+{% if error %}
+    <p class="error">{{ error }}</p>
+{% endif %}
+{% if result %}
+    <p class="result">{{ result }}</p>
+{% endif %}
+{% if history %}
+    <h3>Последние конвертации:</h3>
+    <ul>
+    {% for item in history %}
+        <li>{{ item }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'accounts/base.html' %}
+{% block content %}
+<h2>Профиль</h2>
+<p>Добро пожаловать, <strong>{{ user.username }}</strong>!</p>
+<p>Email: {{ user.email|default:"не указан" }}</p>
+<p>Аккаунт создан: {{ user.date_joined|date:"d.m.Y" }}</p>
+<br>
+<a href="{% url 'logout' %}">выйти</a>
+{% endblock %}

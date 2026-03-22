@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог фильмов</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; }
+        nav { background: #333; padding: 10px 20px; }
+        nav a { color: white; margin-right: 15px; text-decoration: none; }
+        .content { padding: 20px; max-width: 900px; margin: 0 auto; }
+        .movie { background: white; border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 4px; }
+        .rating { font-size: 1.2em; font-weight: bold; }
+        .btn { display: inline-block; padding: 6px 12px; background: #555; color: white; text-decoration: none; border-radius: 4px; margin-right: 5px; }
+        .btn.active { background: #0066cc; }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="{% url 'movie_list' %}">каталог</a>
+    <a href="{% url 'admin:index' %}">админка</a>
+</nav>
+<div class="content">
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>

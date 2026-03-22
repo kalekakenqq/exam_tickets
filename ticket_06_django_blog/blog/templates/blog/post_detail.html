@@ -1,0 +1,8 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<h1>{{ post.title }}</h1>
+<p class="date">{{ post.created_at|date:"d.m.Y H:i" }}</p>
+<div>{{ post.content|linebreaks }}</div>
+<br>
+<a href="{% url 'post_list' %}" class="back">назад к списку</a>
+{% endblock %}
