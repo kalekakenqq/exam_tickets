@@ -16,6 +16,8 @@ def setup():
             visit_time TEXT NOT NULL
         )
     """)
+    conn.execute('DROP INDEX IF EXISTS idx_user_id')
+    conn.execute('DELETE FROM visits')
     conn.commit()
     return conn
 

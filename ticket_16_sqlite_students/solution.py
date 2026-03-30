@@ -14,6 +14,7 @@ def create_db():
             grade INTEGER
         )
     """)
+    conn.execute('DELETE FROM students')
     conn.commit()
     return conn
 
