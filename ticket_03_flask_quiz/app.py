@@ -5,26 +5,25 @@ from flask import Flask, render_template_string, request, session, redirect, url
 app = Flask(__name__)
 app.secret_key = 'secret123'
 
-STYLE = """
-<style>
+_STYLE = """<style>
     body { font-family: Arial, sans-serif; padding: 20px; max-width: 700px; margin: 0 auto; }
-    .btn { padding: 8px 16px; background: #0066cc; color: white; border: none; cursor: pointer; border-radius: 4px; text-decoration: none; font-size: 14px; }
+    .btn { padding: 8px 16px; background: #0066cc; color: white; border: none; cursor: pointer;
+           border-radius: 4px; text-decoration: none; font-size: 14px; }
     .btn-back { background: #666; }
     .correct { color: green; font-weight: bold; }
     .wrong { color: red; }
     .progress { color: #666; font-size: 0.9em; }
-</style>
-"""
+</style>"""
 
 QUESTION_TEMPLATE = """<!DOCTYPE html>
 <html lang="ru">
-<head><meta charset="UTF-8"><title>Опросник</title>{{ style }}</head>
+<head><meta charset="UTF-8"><title>Опросник</title>""" + _STYLE + """</head>
 <body>
 <p class="progress">Вопрос {{ num + 1 }} из {{ total }}</p>
 <h2>{{ q.question }}</h2>
 <form method="post">
     {% for option in q.options %}
-    <label style="display:block; margin-bottom:10px;">
+    <label style="display:block;margin-bottom:10px;">
         <input type="radio" name="answer" value="{{ option }}"
             {% if saved == option %}checked{% endif %} required>
         {{ option }}
@@ -41,7 +40,7 @@ QUESTION_TEMPLATE = """<!DOCTYPE html>
 
 RESULTS_TEMPLATE = """<!DOCTYPE html>
 <html lang="ru">
-<head><meta charset="UTF-8"><title>Результаты</title>{{ style }}</head>
+<head><meta charset="UTF-8"><title>Результаты</title>""" + _STYLE + """</head>
 <body>
 <h1>Результаты</h1>
 <h2>Правильных ответов: {{ score }} из {{ total }}</h2>
@@ -89,7 +88,6 @@ questions = [
 
 @app.route('/')
 def start():
-    # сбрасываем ответы при старте
     session['answers'] = {}
     return redirect(url_for('question', num=0))
 
@@ -108,7 +106,7 @@ def question(num):
     q = questions[num]
     saved = session.get('answers', {}).get(str(num), '')
     return render_template_string(QUESTION_TEMPLATE,
-                                  style=STYLE, q=q, num=num,
+                                  q=q, num=num,
                                   total=len(questions), saved=saved)
 
 
@@ -129,8 +127,9 @@ def results():
             'is_correct': correct,
         })
     return render_template_string(RESULTS_TEMPLATE,
-                                  style=STYLE, score=score,
-                                  total=len(questions), results=results_list)
+                                  score=score,
+                                  total=len(questions),
+                                  results=results_list)
 
 
 if __name__ == '__main__':
