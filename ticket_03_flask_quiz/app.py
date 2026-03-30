@@ -1,65 +1,9 @@
 # установка: pip install flask
 # запуск: python app.py
-from flask import Flask, render_template_string, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for
 
 app = Flask(__name__)
 app.secret_key = 'secret123'
-
-_STYLE = """<style>
-    body { font-family: Arial, sans-serif; padding: 20px; max-width: 700px; margin: 0 auto; }
-    .btn { padding: 8px 16px; background: #0066cc; color: white; border: none; cursor: pointer;
-           border-radius: 4px; text-decoration: none; font-size: 14px; }
-    .btn-back { background: #666; }
-    .correct { color: green; font-weight: bold; }
-    .wrong { color: red; }
-    .progress { color: #666; font-size: 0.9em; }
-</style>"""
-
-QUESTION_TEMPLATE = """<!DOCTYPE html>
-<html lang="ru">
-<head><meta charset="UTF-8"><title>Опросник</title>""" + _STYLE + """</head>
-<body>
-<p class="progress">Вопрос {{ num + 1 }} из {{ total }}</p>
-<h2>{{ q.question }}</h2>
-<form method="post">
-    {% for option in q.options %}
-    <label style="display:block;margin-bottom:10px;">
-        <input type="radio" name="answer" value="{{ option }}"
-            {% if saved == option %}checked{% endif %} required>
-        {{ option }}
-    </label>
-    {% endfor %}
-    <br>
-    {% if num > 0 %}
-    <a href="{{ url_for('question', num=num-1) }}" class="btn btn-back">назад</a>
-    {% endif %}
-    <button type="submit" class="btn">вперёд</button>
-</form>
-</body>
-</html>"""
-
-RESULTS_TEMPLATE = """<!DOCTYPE html>
-<html lang="ru">
-<head><meta charset="UTF-8"><title>Результаты</title>""" + _STYLE + """</head>
-<body>
-<h1>Результаты</h1>
-<h2>Правильных ответов: {{ score }} из {{ total }}</h2>
-<ul>
-{% for r in results %}
-    <li style="margin-bottom:10px;">
-        <strong>{{ r.question }}</strong><br>
-        {% if r.is_correct %}
-            <span class="correct">правильно: {{ r.user }}</span>
-        {% else %}
-            <span class="wrong">ваш ответ: {{ r.user }}</span>
-            (правильно: <strong>{{ r.correct }}</strong>)
-        {% endif %}
-    </li>
-{% endfor %}
-</ul>
-<a href="{{ url_for('start') }}" class="btn">пройти заново</a>
-</body>
-</html>"""
 
 # вопросы с вариантами ответов
 questions = [
@@ -88,6 +32,7 @@ questions = [
 
 @app.route('/')
 def start():
+    # сбрасываем ответы при старте
     session['answers'] = {}
     return redirect(url_for('question', num=0))
 
@@ -105,9 +50,7 @@ def question(num):
         return redirect(url_for('results'))
     q = questions[num]
     saved = session.get('answers', {}).get(str(num), '')
-    return render_template_string(QUESTION_TEMPLATE,
-                                  q=q, num=num,
-                                  total=len(questions), saved=saved)
+    return render_template('question.html', q=q, num=num, total=len(questions), saved=saved)
 
 
 @app.route('/results')
@@ -126,10 +69,7 @@ def results():
             'correct': q['answer'],
             'is_correct': correct,
         })
-    return render_template_string(RESULTS_TEMPLATE,
-                                  score=score,
-                                  total=len(questions),
-                                  results=results_list)
+    return render_template('results.html', score=score, total=len(questions), results=results_list)
 
 
 if __name__ == '__main__':
